@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Алёна Зуева](https://up.htmlacademy.ru/javascript/20/user/944693).
-* Наставник: `Неизвестно`.
+* Наставник: [Александр Уразаев](https://htmlacademy.ru/profile/urazaev).
 
 ---
 
