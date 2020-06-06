@@ -1,4 +1,6 @@
 'use strict';
+var PIN_X_SHIFT = 50 / 2;
+var PIN_Y_SHIFT = 70;
 var prices = [300, 400, 500, 600];
 var rooms = [1, 2, 3, 4];
 var types = ['palace', 'flat', 'house', 'bungalo'];
@@ -60,8 +62,8 @@ var fragment = document.createDocumentFragment();
 var renderPin = function (item) {
   var pinElement = similarPinTemplate.cloneNode(true); /* клонируем структуру элемента, далее наполняем его новыми данными*/
 
-  pinElement.style.left = (item.location.x + 40) + 'px';
-  pinElement.style.top = (item.location.y + 44) + 'px';
+  pinElement.style.left = (item.location.x) - PIN_X_SHIFT + 'px';
+  pinElement.style.top = (item.location.y) - PIN_Y_SHIFT + 'px';
 
   var pinImage = pinElement.querySelector('img');
   pinImage.alt = item.offer.description;
