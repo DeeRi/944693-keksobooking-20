@@ -52,9 +52,6 @@ var generateArray = function () {
 
 var places = generateArray();
 
-var map = document.querySelector('.map');
-map.classList.remove('map--faded');
-
 var similarListElement = document.querySelector('.map__pins'); /* элемент, в котором будут находиться новые элементы на странице*/
 var similarPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin'); /* шаблон для создания метки*/
 var fragment = document.createDocumentFragment();
@@ -80,3 +77,27 @@ var addPin = function (items) {
 };
 
 addPin(places);
+
+// Активация страницы
+var map = document.querySelector('.map');
+var mapPinMain = document.querySelector('.map__pin--main');
+var adForm = document.querySelector('.ad-form');
+var adFormElements = adForm.children;
+var mapFilters = document.querySelector('.map__filters').children;
+
+var changeFormState = function (array, value) {
+  for (var i = 0; i < array.length; ++i) {
+    array[i].disabled = value;
+  }
+};
+changeFormState(adFormElements, true);
+changeFormState(mapFilters, true);
+
+mapPinMain.addEventListener('mousedown', function (evt) {
+  if (evt.button === 0) {
+    map.classList.remove('map--faded');
+    adForm.classList.remove('ad-form--disabled');
+    changeFormState(adFormElements, false);
+    changeFormState(mapFilters, false);
+  }
+});
