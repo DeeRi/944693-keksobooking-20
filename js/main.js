@@ -1,6 +1,8 @@
 'use strict';
 var PIN_X_SHIFT = 50 / 2;
 var PIN_Y_SHIFT = 70;
+var MAIN_PIN_SIZE = 65;
+var MAIN_PIN_ARROW_HEIGHT = 22;
 var prices = [300, 400, 500, 600];
 var rooms = [1, 2, 3, 4];
 var types = ['palace', 'flat', 'house', 'bungalo'];
@@ -52,9 +54,6 @@ var generateArray = function () {
 
 var places = generateArray();
 
-var map = document.querySelector('.map');
-map.classList.remove('map--faded');
-
 var similarListElement = document.querySelector('.map__pins'); /* элемент, в котором будут находиться новые элементы на странице*/
 var similarPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin'); /* шаблон для создания метки*/
 var fragment = document.createDocumentFragment();
@@ -79,4 +78,74 @@ var addPin = function (items) {
   similarListElement.appendChild(fragment);
 };
 
-addPin(places);
+// Активация страницы
+var map = document.querySelector('.map');
+var mapPinMain = document.querySelector('.map__pin--main');
+var adForm = document.querySelector('.ad-form');
+var adFormElements = adForm.children;
+var mapFilters = document.querySelector('.map__filters').children;
+
+var changeFormState = function (array, value) {
+  for (var i = 0; i < array.length; ++i) {
+    array[i].disabled = value;
+  }
+};
+changeFormState(adFormElements, true);
+changeFormState(mapFilters, true);
+
+// заполнение поля адрес
+var addressInput = document.querySelector('#address');
+
+var fillAddress = function () {
+  if (map.classList.contains('map--faded')) {
+    addressInput.value = Math.round(mapPinMain.offsetLeft + MAIN_PIN_SIZE / 2) + ', ' + Math.round(mapPinMain.offsetTop + MAIN_PIN_SIZE / 2);
+  } else {
+    addressInput.value = Math.round(mapPinMain.offsetLeft + MAIN_PIN_SIZE / 2) + ', ' + Math.round(mapPinMain.offsetTop + MAIN_PIN_SIZE + MAIN_PIN_ARROW_HEIGHT);
+  }
+};
+
+mapPinMain.addEventListener('mousemove', function () {
+  addressInput.value = Math.round(mapPinMain.offsetLeft + MAIN_PIN_SIZE / 2) + ', ' + Math.round(mapPinMain.offsetTop + MAIN_PIN_ARROW_HEIGHT);
+});
+
+fillAddress();
+
+var activatePage = function (evt) {
+  if (evt.button === 0 || evt.key === 'Enter') {
+    map.classList.remove('map--faded');
+    addPin(places);
+    adForm.classList.remove('ad-form--disabled');
+    changeFormState(adFormElements, false);
+    changeFormState(mapFilters, false);
+    addressInput.value = '';
+    fillAddress();
+  }
+};
+
+mapPinMain.addEventListener('mousedown', activatePage);
+mapPinMain.addEventListener('keydown', activatePage);
+
+// Валидация формы
+var roomNumber = document.querySelector('#room_number');
+var guestsNumber = document.querySelector('#capacity');
+
+var checkSelectValidity = function () {
+  if (guestsNumber.options[guestsNumber.selectedIndex].value !== roomNumber.options[roomNumber.selectedIndex].value) {
+    guestsNumber.setCustomValidity('Неверное количество гостей');
+  } else {
+    guestsNumber.setCustomValidity('');
+  }
+};
+
+var validateSelect = function (element) {
+  element.addEventListener('change', function () {
+    if (checkSelectValidity()) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+};
+
+validateSelect(roomNumber);
+validateSelect(guestsNumber);
