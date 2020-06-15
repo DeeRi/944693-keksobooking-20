@@ -76,15 +76,12 @@ var addPin = function (items) {
   similarListElement.appendChild(fragment);
 };
 
-addPin(places);
-
 // Активация страницы
 var map = document.querySelector('.map');
 var mapPinMain = document.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
 var adFormElements = adForm.children;
 var mapFilters = document.querySelector('.map__filters').children;
-var sendFormButton = document.querySelector('.ad-form__submit');
 
 var changeFormState = function (array, value) {
   for (var i = 0; i < array.length; ++i) {
@@ -99,43 +96,48 @@ var addressInput = document.querySelector('#address');
 
 var fillAddress = function () {
   if (map.classList.contains('map--faded')) {
-    addressInput.value = mapPinMain.style.left + ', ' + mapPinMain.style.top;
+    addressInput.value = mapPinMain.offsetLeft + ', ' + mapPinMain.offsetTop;
   }
 };
 
 fillAddress();
 
-mapPinMain.addEventListener('mousedown', function (evt) {
-  if (evt.button === 0) {
+var activatePage = function (evt) {
+  if (evt.button === 0 || evt.key === 'Enter') {
     map.classList.remove('map--faded');
+    addPin(places);
     adForm.classList.remove('ad-form--disabled');
     changeFormState(adFormElements, false);
     changeFormState(mapFilters, false);
     addressInput.value = '';
     // добавить новое значение адреса
   }
-});
+};
+
+mapPinMain.addEventListener('mousedown', activatePage);
+mapPinMain.addEventListener('keydown', activatePage);
 
 // Валидация формы
 var roomNumber = document.querySelector('#room_number');
 var guestsNumber = document.querySelector('#capacity');
 
-// валидация происходит, но кастомное сообщение об ошибке не отображается
-var checkValidity = function () {
+var checkSelectValidity = function () {
   if (guestsNumber.options[guestsNumber.selectedIndex].value !== roomNumber.options[roomNumber.selectedIndex].value) {
     guestsNumber.setCustomValidity('Неверное количество гостей');
-    return false;
   } else {
     guestsNumber.setCustomValidity('');
-    return true;
   }
 };
 
-sendFormButton.addEventListener('click', function (evt) {
-  evt.preventDefault();
-  if (checkValidity()) {
-    adForm.submit();
-  } else {
-    return;
-  }
-});
+var validateSelect = function (element) {
+  element.addEventListener('change', function () {
+    if (checkSelectValidity()) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+};
+
+validateSelect(roomNumber);
+validateSelect(guestsNumber);
