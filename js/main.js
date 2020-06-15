@@ -1,6 +1,8 @@
 'use strict';
 var PIN_X_SHIFT = 50 / 2;
 var PIN_Y_SHIFT = 70;
+var MAIN_PIN_SIZE = 65;
+var MAIN_PIN_ARROW_HEIGHT = 22;
 var prices = [300, 400, 500, 600];
 var rooms = [1, 2, 3, 4];
 var types = ['palace', 'flat', 'house', 'bungalo'];
@@ -96,9 +98,15 @@ var addressInput = document.querySelector('#address');
 
 var fillAddress = function () {
   if (map.classList.contains('map--faded')) {
-    addressInput.value = mapPinMain.offsetLeft + ', ' + mapPinMain.offsetTop;
+    addressInput.value = Math.round(mapPinMain.offsetLeft + MAIN_PIN_SIZE / 2) + ', ' + Math.round(mapPinMain.offsetTop + MAIN_PIN_SIZE / 2);
+  } else {
+    addressInput.value = Math.round(mapPinMain.offsetLeft + MAIN_PIN_SIZE / 2) + ', ' + Math.round(mapPinMain.offsetTop + MAIN_PIN_SIZE + MAIN_PIN_ARROW_HEIGHT);
   }
 };
+
+mapPinMain.addEventListener('mousemove', function () {
+  addressInput.value = Math.round(mapPinMain.offsetLeft + MAIN_PIN_SIZE / 2) + ', ' + Math.round(mapPinMain.offsetTop + MAIN_PIN_ARROW_HEIGHT);
+});
 
 fillAddress();
 
@@ -110,7 +118,7 @@ var activatePage = function (evt) {
     changeFormState(adFormElements, false);
     changeFormState(mapFilters, false);
     addressInput.value = '';
-    // добавить новое значение адреса
+    fillAddress();
   }
 };
 
