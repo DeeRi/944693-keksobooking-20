@@ -7,6 +7,8 @@
   var similarListElement = document.querySelector('.map__pins'); /* элемент, в котором будут находиться новые элементы на странице*/
   var mapFilters = document.querySelector('.map__filters').children;
   var addressInput = document.querySelector('#address');
+  var housingType = document.querySelector('#housing-type');
+  var MAX_PINS_NUMBER = 5;
 
   var changeFormState = function (array, value) {
     for (var i = 0; i < array.length; ++i) {
@@ -17,12 +19,18 @@
   changeFormState(adFormElements, true);
   changeFormState(mapFilters, true);
 
-  var successHandler = function (items) {
+  var addPins = function (data) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < items.length; i++) {
-      fragment.appendChild(window.pin.renderPin(items[i]));
+    for (var i = 0; i < MAX_PINS_NUMBER; i++) {
+      fragment.appendChild(window.pin.renderPin(data[i]));
     }
     similarListElement.appendChild(fragment);
+  };
+
+  var pins = [];
+  var successHandler = function (data) {
+    pins = data;
+    addPins(pins);
   };
 
   var errorHandler = function (errorMessage) {
@@ -36,6 +44,13 @@
     document.body.insertAdjacentElement('afterbegin', node);
   };
 
+  var updatePins = function () {
+    var samePinType = pins.filter(function (pin) {
+      return pin.type === housingType.options[housingType.selectedIndex].value;
+    });
+    addPins(samePinType);
+  };
+
   var activatePage = function (evt) {
     if (evt.button === 0 || evt.key === 'Enter') {
       map.classList.remove('map--faded');
@@ -44,10 +59,14 @@
       changeFormState(mapFilters, false);
       addressInput.value = '';
       window.form.fillAddress();
-      window.pin.addPin(window.backend.load(successHandler, errorHandler));
+      addPins(window.backend.load(successHandler, errorHandler));
     }
   };
 
   mapPinMain.addEventListener('mousedown', activatePage);
   mapPinMain.addEventListener('keydown', activatePage);
+
+  housingType.addEventListener('onchange', function () {
+    updatePins();
+  });
 })();
