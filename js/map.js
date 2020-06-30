@@ -27,9 +27,12 @@
     similarListElement.appendChild(fragment);
   };
 
+  // переменная для сохранения данных с сервера
   var pins = [];
   var successHandler = function (data) {
     pins = data;
+    // eslint-disable-next-line no-console
+    console.log(pins);
     addPins(pins);
   };
 
@@ -44,10 +47,13 @@
     document.body.insertAdjacentElement('afterbegin', node);
   };
 
-  var updatePins = function () {
-    var samePinType = pins.filter(function (pin) {
-      return pin.type === housingType.options[housingType.selectedIndex].value;
+
+  var updatePins = function (array) {
+    var samePinType = array.filter(function (item) {
+      return item.offer.type.toString() === housingType.options[housingType.selectedIndex].value.toString();
     });
+    // eslint-disable-next-line no-console
+    console.log(samePinType);
     addPins(samePinType);
   };
 
@@ -59,14 +65,13 @@
       changeFormState(mapFilters, false);
       addressInput.value = '';
       window.form.fillAddress();
-      addPins(window.backend.load(successHandler, errorHandler));
+      window.backend.load(successHandler, errorHandler);
     }
   };
 
   mapPinMain.addEventListener('mousedown', activatePage);
   mapPinMain.addEventListener('keydown', activatePage);
-
-  housingType.addEventListener('onchange', function () {
-    updatePins();
+  housingType.addEventListener('change', function () {
+    updatePins(pins);
   });
 })();
