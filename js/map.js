@@ -8,7 +8,6 @@
   var mapFilters = document.querySelector('.map__filters').children;
   var addressInput = document.querySelector('#address');
   var housingType = document.querySelector('#housing-type');
-  var MAX_PINS_NUMBER = 5;
 
   var changeFormState = function (array, value) {
     for (var i = 0; i < array.length; ++i) {
@@ -21,8 +20,9 @@
 
   var addPins = function (data) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < MAX_PINS_NUMBER; i++) {
-      fragment.appendChild(window.pin.renderPin(data[i]));
+    var numberOfElements = data.length >= 5 ? data.slice(0, 5) : data;
+    for (var i = 0; i < numberOfElements.length; i++) {
+      fragment.appendChild(window.pin.renderPin(numberOfElements[i]));
     }
     similarListElement.appendChild(fragment);
   };
@@ -49,6 +49,7 @@
 
 
   var updatePins = function (array) {
+    similarListElement.innerHTML = '';
     var samePinType = array.filter(function (item) {
       return item.offer.type.toString() === housingType.options[housingType.selectedIndex].value.toString();
     });
