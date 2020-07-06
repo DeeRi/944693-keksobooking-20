@@ -63,7 +63,9 @@
   };
 
   var activatePage = function (evt) {
-    if (evt.button === 0 || evt.key === 'Enter') {
+    if ((evt.button === 0 || evt.key === 'Enter') && !map.classList.contains('map--faded')) {
+      return;
+    } else if (evt.button === 0 || evt.key === 'Enter') {
       map.classList.remove('map--faded');
       adForm.classList.remove('ad-form--disabled');
       changeFormState(adFormElements, false);
@@ -71,8 +73,6 @@
       addressInput.value = '';
       window.form.fillAddress();
       window.backend.load(successHandler, errorHandler);
-    } else if ((evt.button === 0 || evt.key === 'Enter') && !map.classList.contains('map--faded')) {
-      return;
     }
   };
 
