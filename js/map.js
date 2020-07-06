@@ -8,6 +8,8 @@
   var mapFilters = document.querySelector('.map__filters').children;
   var addressInput = document.querySelector('#address');
   var housingType = document.querySelector('#housing-type');
+  var fragment = document.createDocumentFragment();
+  var MAX_PINS_NUMBER = 5;
 
   var changeFormState = function (array, value) {
     for (var i = 0; i < array.length; ++i) {
@@ -19,8 +21,7 @@
   changeFormState(mapFilters, true);
 
   var addPins = function (data) {
-    var fragment = document.createDocumentFragment();
-    var numberOfElements = data.length >= 5 ? data.slice(0, 5) : data;
+    var numberOfElements = data.length >= MAX_PINS_NUMBER ? data.slice(0, MAX_PINS_NUMBER) : data;
     for (var i = 0; i < numberOfElements.length; i++) {
       fragment.appendChild(window.pin.renderPin(numberOfElements[i]));
     }
@@ -31,8 +32,6 @@
   var pins = [];
   var successHandler = function (data) {
     pins = data;
-    // eslint-disable-next-line no-console
-    console.log(pins);
     addPins(pins);
   };
 
@@ -50,11 +49,16 @@
 
   var updatePins = function (array) {
     similarListElement.innerHTML = '';
+    similarListElement.appendChild(mapPinMain);
     var samePinType = array.filter(function (item) {
-      return item.offer.type.toString() === housingType.options[housingType.selectedIndex].value.toString();
+      if (item.offer.type.toString() === housingType.options[housingType.selectedIndex].value.toString()) {
+        return true;
+      } else if (housingType.options[housingType.selectedIndex].value.toString() === 'any') {
+        return true;
+      } else {
+        return false;
+      }
     });
-    // eslint-disable-next-line no-console
-    console.log(samePinType);
     addPins(samePinType);
   };
 
@@ -67,6 +71,8 @@
       addressInput.value = '';
       window.form.fillAddress();
       window.backend.load(successHandler, errorHandler);
+    } else if ((evt.button === 0 || evt.key === 'Enter') && !map.classList.contains('map--faded')) {
+      return;
     }
   };
 
