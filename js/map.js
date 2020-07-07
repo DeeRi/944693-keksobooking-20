@@ -76,9 +76,17 @@
     }
   };
 
-  mapPinMain.addEventListener('mousedown', activatePage);
-  mapPinMain.addEventListener('keydown', activatePage);
+  mapPinMain.addEventListener('mousedown', function (evt) {
+    activatePage(evt);
+  }
+  );
+
+  mapPinMain.addEventListener('keydown', function (evt) {
+    activatePage(evt);
+  });
+
   housingType.addEventListener('change', function () {
+    window.card.createCard(pins);
     updatePins(pins);
   });
 })();

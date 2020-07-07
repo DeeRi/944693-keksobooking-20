@@ -15,6 +15,9 @@
       pinImage.alt = item.offer.description;
       pinImage.src = item.author.avatar;
 
+      pinElement.addEventListener('click', function () {
+        window.card.createCard(pinElement);
+      });
       return pinElement;
     }
   };
