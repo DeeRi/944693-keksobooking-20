@@ -7,8 +7,8 @@
 
   window.card = {
     createCard: function (items) {
-      var cardElement = similarCardTemplate.cloneNode(true);
       for (var i = 0; i < items.length; ++i) {
+        var cardElement = similarCardTemplate.cloneNode(true);
         var currentElement = items[i];
         cardElement.querySelector('.popup__title').textContent = currentElement.offer.title;
         cardElement.querySelector('.popup__text--address').textContent = currentElement.offer.address;
@@ -28,6 +28,18 @@
         cardElement.querySelector('.popup__feature').textContent = currentElement.offer.features;
         cardElement.querySelector('.popup__description').textContent = currentElement.offer.description;
         cardElement.querySelector('.popup__avatar').src = currentElement.author.avatar;
+        var picturesArray = cardElement.querySelector('.popup__photos').children;
+        var srcArray = currentElement.offer.photos;
+        for (var index = 0; index < srcArray.length; ++index) {
+          if (index > 0) {
+            var imgElement = picturesArray[0].cloneNode(true);
+            imgElement.src = srcArray[index];
+            cardElement.querySelector('.popup__photos').appendChild(imgElement);
+          } else {
+            imgElement = picturesArray[0];
+            imgElement.src = srcArray[index];
+          }
+        }
         fragment.appendChild(cardElement);
       }
       map.insertBefore(fragment, mapFiltersContainer);

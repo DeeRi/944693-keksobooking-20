@@ -32,6 +32,9 @@
   var pins = [];
   var successHandler = function (data) {
     pins = data;
+    window.card.createCard(pins);
+    // eslint-disable-next-line no-console
+    console.log(pins);
     addPins(pins);
   };
 
@@ -86,7 +89,6 @@
   });
 
   housingType.addEventListener('change', function () {
-    window.card.createCard(pins);
     updatePins(pins);
   });
 })();
