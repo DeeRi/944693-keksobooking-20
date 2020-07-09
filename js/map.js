@@ -32,9 +32,7 @@
   var pins = [];
   var successHandler = function (data) {
     pins = data;
-    window.card.createCard(pins);
-    // eslint-disable-next-line no-console
-    console.log(pins);
+    window.card.createCard(pins[0]);
     addPins(pins);
   };
 
