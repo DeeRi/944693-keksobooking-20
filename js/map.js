@@ -32,6 +32,7 @@
   var pins = [];
   var successHandler = function (data) {
     pins = data;
+    window.card.createCard(pins[0]);
     addPins(pins);
   };
 
@@ -76,8 +77,15 @@
     }
   };
 
-  mapPinMain.addEventListener('mousedown', activatePage);
-  mapPinMain.addEventListener('keydown', activatePage);
+  mapPinMain.addEventListener('mousedown', function (evt) {
+    activatePage(evt);
+  }
+  );
+
+  mapPinMain.addEventListener('keydown', function (evt) {
+    activatePage(evt);
+  });
+
   housingType.addEventListener('change', function () {
     updatePins(pins);
   });
