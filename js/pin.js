@@ -14,11 +14,15 @@
       var pinImage = pinElement.querySelector('img');
       pinImage.alt = item.offer.description;
       pinImage.src = item.author.avatar;
-
-      pinElement.addEventListener('click', function () {
-        window.card.createCard(pinElement);
-      });
       return pinElement;
+    },
+
+    addCardOnClick: function (items, data) {
+      for (var i = 1; i < items.length; ++i) {
+        items[i].addEventListener('click', function () {
+          window.card.createCard(data[i]);
+        });
+      }
     }
   };
 })();

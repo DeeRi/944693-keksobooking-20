@@ -38,6 +38,17 @@
           imgElement.src = srcArray[index];
         }
       }
+
+      var closePopup = cardElement.querySelector('.popup__close');
+      closePopup.addEventListener('click', function () {
+        cardElement.remove();
+      });
+
+      document.addEventListener('keydown', function (evt) {
+        if (evt.key === 'Escape') {
+          cardElement.remove();
+        }
+      });
       map.insertBefore(cardElement, mapFiltersContainer);
     }
   };

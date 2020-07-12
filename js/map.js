@@ -32,7 +32,6 @@
   var pins = [];
   var successHandler = function (data) {
     pins = data;
-    window.card.createCard(pins[0]);
     addPins(pins);
   };
 
@@ -79,8 +78,8 @@
 
   mapPinMain.addEventListener('mousedown', function (evt) {
     activatePage(evt);
-  }
-  );
+    window.pin.addCardOnClick(similarListElement.querySelectorAll('.map__pin'), pins);
+  });
 
   mapPinMain.addEventListener('keydown', function (evt) {
     activatePage(evt);
