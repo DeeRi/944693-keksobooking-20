@@ -31,8 +31,13 @@
   });
 
   var checkSelectValidity = function () {
-    if (guestsNumber.options[guestsNumber.selectedIndex].value !== roomNumber.options[roomNumber.selectedIndex].value) {
+    var guestsValue = guestsNumber.options[guestsNumber.selectedIndex].value;
+    var roomsValue = roomNumber.options[roomNumber.selectedIndex].value;
+    if ((guestsValue > roomsValue) || (guestsValue !== '0' && roomsValue === '100')) {
       guestsNumber.setCustomValidity('Неверное количество гостей');
+    }
+    if (guestsValue === '0' && roomsValue !== '100') {
+      roomNumber.setCustomValidity('Неверное количество комнат');
     } else {
       guestsNumber.setCustomValidity('');
     }
