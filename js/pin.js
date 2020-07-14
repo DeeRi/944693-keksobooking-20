@@ -16,10 +16,9 @@
     },
 
     addCardOnClick: function (items, data) {
-      for (var i = 1; i < items.length; ++i) {
-        var newItem = data[i];
+      for (var i = 0; i < items.length; ++i) {
         items[i].addEventListener('click', function () {
-          window.card.createCard(newItem);
+          window.card.createCard(data[i]);
         });
       }
     }

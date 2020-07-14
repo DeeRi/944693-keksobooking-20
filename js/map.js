@@ -33,7 +33,7 @@
   var successHandler = function (data) {
     pins = data;
     addPins(pins);
-    window.pin.addCardOnClick(similarListElement.querySelectorAll('.map__pin'), pins);
+    window.pin.addCardOnClick(document.querySelectorAll('.map__pin:not(.map__pin--main)'), pins);
   };
 
   var errorHandler = function (errorMessage) {
