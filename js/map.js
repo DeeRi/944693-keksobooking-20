@@ -33,6 +33,7 @@
   var successHandler = function (data) {
     pins = data;
     addPins(pins);
+    window.pin.addCardOnClick(similarListElement.querySelectorAll('.map__pin'), pins);
   };
 
   var errorHandler = function (errorMessage) {
@@ -78,7 +79,6 @@
 
   mapPinMain.addEventListener('mousedown', function (evt) {
     activatePage(evt);
-    window.pin.addCardOnClick(similarListElement.querySelectorAll('.map__pin'), pins);
   });
 
   mapPinMain.addEventListener('keydown', function (evt) {
