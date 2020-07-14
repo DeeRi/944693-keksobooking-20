@@ -11,6 +11,8 @@
   var flatSelect = document.querySelector('#type');
   var timeInSelect = document.querySelector('#timein');
   var timeOutSelect = document.querySelector('#timeout');
+  var guestsValue = guestsNumber.options[guestsNumber.selectedIndex].value;
+  var roomsValue = roomNumber.options[roomNumber.selectedIndex].value;
 
   window.form = {
     fillAddress: function () {
@@ -66,15 +68,14 @@
   };
 
   var checkSelectValidity = function () {
-    var guestsValue = guestsNumber.options[guestsNumber.selectedIndex].value;
-    var roomsValue = roomNumber.options[roomNumber.selectedIndex].value;
-    if ((guestsValue > roomsValue) || (guestsValue !== '0' && roomsValue === '100')) {
+    if ((Number(guestsValue) > Number(roomsValue)) || (guestsValue !== '0' && roomsValue === '100')) {
       guestsNumber.setCustomValidity('Неверное количество гостей');
     }
     if (guestsValue === '0' && roomsValue !== '100') {
       roomNumber.setCustomValidity('Неверное количество комнат');
     } else {
       guestsNumber.setCustomValidity('');
+      roomNumber.setCustomValidity('');
     }
   };
 
@@ -101,6 +102,6 @@
     checkFlatType(flatSelect.options[flatSelect.selectedIndex].value);
   });
 
-  validateSelect(roomNumber, checkSelectValidity);
   validateSelect(guestsNumber, checkSelectValidity);
+  validateSelect(roomNumber, checkSelectValidity);
 })();
