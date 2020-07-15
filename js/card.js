@@ -6,6 +6,9 @@
 
   window.card = {
     createCard: function (item) {
+      if (map.querySelector('.map__card')) {
+        return;
+      }
       var cardElement = similarCardTemplate.cloneNode(true);
       var currentElement = item;
       cardElement.querySelector('.popup__title').textContent = currentElement.offer.title;

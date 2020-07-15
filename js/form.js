@@ -104,4 +104,21 @@
 
   validateSelect(guestsNumber, checkSelectValidity);
   validateSelect(roomNumber, checkSelectValidity);
+
+
+  var form = document.querySelector('.ad-form');
+  form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.backend.send(new FormData(form), function () {
+    });
+    var elements = form.getElementsByTagName('input');
+    // eslint-disable-next-line no-console
+    console.log(elements);
+    for (var i = 0; i < elements.length; i++) {
+      if (elements[i].id === 'address') {
+        continue;
+      }
+      elements[i].value = '';
+    }
+  });
 })();
