@@ -14,6 +14,10 @@
   var guestsValue = guestsNumber.options[guestsNumber.selectedIndex].value;
   var roomsValue = roomNumber.options[roomNumber.selectedIndex].value;
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
+  var adForm = document.querySelector('.ad-form');
+  var adFormElements = adForm.children;
+  var resetButton = document.querySelector('.ad-form__reset');
+  var mapFilters = document.querySelector('.map__filters').children;
 
   window.form = {
     fillAddress: function () {
@@ -35,6 +39,16 @@
 
   mapPinMain.addEventListener('mousemove', function () {
     addressInput.value = Math.round(mapPinMain.offsetLeft + MAIN_PIN_SIZE / 2) + ', ' + Math.round(mapPinMain.offsetTop + MAIN_PIN_ARROW_HEIGHT);
+  });
+
+  resetButton.addEventListener('click', function () {
+    var elements = form.getElementsByTagName('input');
+    for (var i = 0; i < elements.length; i++) {
+      if (elements[i].id === 'address') {
+        continue;
+      }
+      elements[i].value = '';
+    }
   });
 
   var syncTime = function (element1, element2) {
@@ -120,6 +134,13 @@
       }
       elements[i].value = '';
     }
+
+    map.classList.add('map--faded');
+    adForm.classList.add('ad-form--disabled');
+    window.map.changeFormState(adFormElements, true);
+    window.map.changeFormState(mapFilters, true);
+    addressInput.value = '';
+
     var successMessage = successTemplate.cloneNode(true);
     document.body.insertAdjacentElement('afterbegin', successMessage);
     if (document.querySelector('.success')) {

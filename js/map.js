@@ -11,14 +11,16 @@
   var fragment = document.createDocumentFragment();
   var MAX_PINS_NUMBER = 5;
 
-  var changeFormState = function (array, value) {
-    for (var i = 0; i < array.length; ++i) {
-      array[i].disabled = value;
+  window.map = {
+    changeFormState: function (array, value) {
+      for (var i = 0; i < array.length; ++i) {
+        array[i].disabled = value;
+      }
     }
   };
 
-  changeFormState(adFormElements, true);
-  changeFormState(mapFilters, true);
+  window.map.changeFormState(adFormElements, true);
+  window.map.changeFormState(mapFilters, true);
 
   var addPins = function (data) {
     var numberOfElements = data.length >= MAX_PINS_NUMBER ? data.slice(0, MAX_PINS_NUMBER) : data;
@@ -69,8 +71,8 @@
     } else if (evt.button === 0 || evt.key === 'Enter') {
       map.classList.remove('map--faded');
       adForm.classList.remove('ad-form--disabled');
-      changeFormState(adFormElements, false);
-      changeFormState(mapFilters, false);
+      window.map.changeFormState(adFormElements, false);
+      window.map.changeFormState(mapFilters, false);
       addressInput.value = '';
       window.form.fillAddress();
       window.backend.load(successHandler, errorHandler);
