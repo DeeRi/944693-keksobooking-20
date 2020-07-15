@@ -13,6 +13,7 @@
   var timeOutSelect = document.querySelector('#timeout');
   var guestsValue = guestsNumber.options[guestsNumber.selectedIndex].value;
   var roomsValue = roomNumber.options[roomNumber.selectedIndex].value;
+  var successTemplate = document.querySelector('#success').content.querySelector('.success');
 
   window.form = {
     fillAddress: function () {
@@ -107,18 +108,30 @@
 
 
   var form = document.querySelector('.ad-form');
+
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
     window.backend.send(new FormData(form), function () {
     });
     var elements = form.getElementsByTagName('input');
-    // eslint-disable-next-line no-console
-    console.log(elements);
     for (var i = 0; i < elements.length; i++) {
       if (elements[i].id === 'address') {
         continue;
       }
       elements[i].value = '';
+    }
+    var successMessage = successTemplate.cloneNode(true);
+    document.body.insertAdjacentElement('afterbegin', successMessage);
+    if (document.querySelector('.success')) {
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          successMessage.remove();
+        }
+      });
+
+      successMessage.addEventListener('click', function () {
+        successMessage.remove();
+      });
     }
   });
 })();

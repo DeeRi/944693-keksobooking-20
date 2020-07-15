@@ -46,7 +46,6 @@
       closePopup.addEventListener('click', function () {
         cardElement.remove();
       });
-
       document.addEventListener('keydown', function (evt) {
         if (evt.key === 'Escape') {
           cardElement.remove();
